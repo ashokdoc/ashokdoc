@@ -1,0 +1,17 @@
+Networking Concepts:
+
+Overlay Networking:
+
+A. It is a method of creating a layer of network abstractions that can be run multiple seperate, discrere virtualized network layers on top of the physical network.
+   All the nodes are connected with one another by means of virtual IP correspond to a path in the underlaying network(It will create a tunnel)
+ 
+Layer 2: it is a data link where data packets are encoded and decoded into bits.
+         The MAC sub layer controls how a computer on the network gains access to the data and permission.
+
+Layer 3(Overlay): 
+   
+
+Flannel: very easy to use, No network policy support
+WeaveNet: support network policy, support encryption with IPsec for all traffic b/w nodes. easy to use, well support
+
+

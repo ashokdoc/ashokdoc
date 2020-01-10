@@ -1,0 +1,313 @@
+Shell Script: 
+To export a path as system path: 
+Ex: if we want to make a path as system path 
+      $ export PATH=${PATH}:/home/ec-2user/usercmds/bin
+So the default which also look into this folder also, if any script present in the location it will run from command line.
+ 
+But is it temporary if we want make it permeant
+Change it in the .bashrc
+And then run 
+ 
+ $source .bashrc (it’s a permanent change)
+
+User required text print
+
+ 
+If we want to print the ls output through echo message then we can use $ echo “(ls)”  
+                     $ echo ‘(ls)’
+                     $ echo  $ls    ### there is variation in the outputs check the about command.
+•	If we use command in the double quotes there is different if we use txt in the double quote there will be different output.
+
+
+
+Variables:   
+
+
+ 
+ 
+By default if there is no variable values then it will show blank space. No space while defining the variable value
+If we add \n then we get output in different line
+
+Variable shellnot start with number
+
+To print date.log with variable 
+
+$todays_date=$(date +”%Y-%m-%d”)
+$log_file_name=$todays_date
+$touch ${log_file_name}.log
+
+store the variable into file system,memory.
+If you define your variable in the shell script they are ony vaild with in script.
+If command line then until computer restart.
+It will be permanent in .bashrc or bashprofile
+ 
+
+The “env” command will display all the variables in the system 
+
+Special variable : echo $? 
+If we get the output as 0 last command is successfully some thing else then the last command is error.
+
+Echo command
+ 
+ -n = it will append the next line to it
+Ex: my_name=$ashok
+echo -n  "your name $my_name"
+echo -n "($pwd)"   
+echo $(pwd)
+output:
+observation: when declaring command in echo then don’t use double quote.
+-n: it will link the next command output to self line.
+\n: basically it will create a new line but if we use in shell 
+    Then it will not work.
+  
+
+\b: one back move of the cursor
+\v: vertical of the text
+
+1.	Input and output commands
+
+echo  output command
+read  input command
+(command line arguments as a input.)
+
+
+read -p "some thing" a
+
+2. providing input with command line arguments
+
+vi pvd_in_cm.sh
+
+#read -p "enter num1 :" a
+#read -p "enter num2 :" b
+result= expr "$a+ $b" |bc
+echo "this addition of $a and $b is: $result"
+
+when you run this script it you have to provide the values on the command only.
+
+
+3.control statements 
+
+for example if we want to run a script that must contain value from command line or from script it self then only the script shell run
+it this type of situtions we use command line arguments.
+
+#!/bin/bash
+cmd_line_argu=$# (some value should be given)
+if [ cmd_line_argu -eq 2 ]
+then 
+ x=$1
+ y=$2
+ result=$((x+y))
+ echo "value $result"
+fi
+# here if you dont provide the values from the command line argu then it will not run
+ 
+ Decision Control Statement (Imp)
+ 
+simple shell script to start a apache service
+#!/bin/bash
+read -p "enter the action you want to perform" action
+if [ "${action}" == "start" ]
+then 
+sudo systemctl start apache2
+fi
+if [ "${action}" == "stop" ]
+then 
+sudo systemctl stop apache2
+fi
+
+4.Loops
+
+when we need to write no of lines again and again then we use loops .
+
+#//bin/bash
+for each in $(seq 1 20)
+do 
+  echo "welcome to shell"
+done
+# this will print 20 times $echo
+
+different type of loops:
+1. for loop
+2. while
+3. until
+4. select  
+
+Generating sequence of number
+$seq 1 30  # sysntax seq start end 
+
+select loop:
+
+*it is usefuk when you want to create a numberd menu shell script
+
+loop control commands:
+
+break command is used in script to stop the loop not the entair script
+
+#!/bin/bash
+i=1
+while true
+do 
+    echo "$i"
+	if [ $1 eq 100 ]
+	then 
+	break
+	fi
+i=$((i+1))
+done
+
+when the value of i reaches 100 it will automatically terminated.
+
+
+
+
+
+
+
+
+
+2.	Awk command
+
+Awk systax
+$Awk options ‘pattern/condition {action}’ filename
+$command | awk options ‘pattern/condition {action}’
+Options:
+-F fs to specify a filed separator
+-v var=value To declare a variable
+-f file To specify a file that contains awk script
+$awk –f awk_script.awk filename
+$awk ‘BEGIN {print “your file of /etc/passwd”} /root/ {print $0} END {print “file printed”}’ /etc/passwd
+BEGIN {
+       print "test"
+       }
+/root/ {
+print $0
+}
+END {
+print "test"
+}
+
+ 
+
+$awk –f awk.script /etc/passwd
+Output:  
+
+To initialize a variable and print the variable.
+$ awk 'BEGIN { a=5 ; print a }'   # when you write a script no need to provide ; insisted of that you have to provide \n
+$echo “2  6” | awk ‘ { print “a=” $1 , “b=” $2 } ’ 
+Output : a=2 b=6    # here 2 treated as 1 and 6 treated as 2 as place values 
+* By default awk treated your records as fields.
+* shebang line for aws script is #!/bin/awk   # use which awk  output
+* in awk script no need to write $a symbol in the command it will automatically fetch         the value of a
+* Awk’s built-in variables include the field variables $1, $2, $3, and so on ($0 is the entire line)
+
+NR= prints all the lines along with line numbers
+    $awk 'NR==1{print$2}'
+
+
+
+
+
+
+
+
+Using awk in shell script: 
+  #!/bin/bash
+pwd
+date
+a=$(awk 'BEGIN { print "hai" }’ )
+b=$(awk 'BEGIN { print "hai" }' )
+echo "value of a=$a"
+echo "value of b=$b"
+
+Output:  
+
+ How to read variables for awk script
+Some commands usage with awk
+ 1.	Awk –F ‘:’  ‘{ print $1 }’ /etc/passwd  here : this will work as a separator.
+ 2.	$cut -d ':' -f /etc/passwd    the above same out put we can getit with cut command : 
+
+
+
+
+
+
+4.	Cut Command:
+    it will work on based on 1.Byte position
+							 2.Character position
+							 3.fileds
+	systax for cut command
+    $cut options <range of byte/character/fileds> file
+    options: based on filed -F , based on bytes -b, based on character -c
+	Ex: range of poition : 3-7, 3- (till end)
+	$ cut -b 1 /etc/passwd   #it wil disply the first letter
+	$ cut -b 3- /etc/passwd  # it will dispaly the letter 3 to end
+	$ cut -c 2-5 /etc/passwd # it will disply the 2 to 5 character
+	$ cut -d -f 2-5 /etc/passwd # it will display the 2 to 5 charachter.  -d means deliminator
+	  we can replace the delimeter with desired txt ex: cut -d ':' -f 1,6 --output-delimiter= "=" /etc/passwd # here : will replace = in the output
+5. Sed Command: sed opttions commands file name
+    Functions of sed commadn on a file: 1. Viewing file content.
+										2. Searching 
+										3. Find and replace
+										4. Insert and delete content
+	View file content: 
+    -i  it will change the original file  ex: sed -i '1i s.no test' /etc/passwd
+	
+	
+	
+    $sed p /etc/passwd # it will print the doc as it is.
+	$sed -n 'p' /etc/passwd # it will print without any duplicate value
+	$sed -n '/root/p' /etc/passwd # it will search jane in in the document 
+	$sed -n -e '/root/p' -e '/root/p' /etc/passwd #used to search multiple values
+	$sed -n -f commands.txt /etc/passwd # here all the commands located with in the commads.txt executed with sed
+	$sed -n ''2 p' /etc/passwd # it will print only 2nd line (Vertical)
+	$sed -n '1,4 p' /etc/passwd # it will print from 1 to 4 lines
+	$sed -n '3,$ p' /etc/passwd # it will print 3 to end of the file
+	$sed -n '1~2 p ' /etc/passwd # only odd number liines willbe printed 
+	$sed -n '/root/,4 p' /etc/passwd # prints first match of root to 4 th line 
+	
+	
+	Delete txt in the file:
+	
+	$sed '2 d' /etc/passwd # this will delete only 2nd line.
+	$sed '1,5 d' /etc/passwd # this will delete 1 to 5 lines.
+	$sed '/manager/2 d' /etc/passwd.
+	$sed '^$/d' etc/passwd # this will delete the all the empty lines.
+	
+	Write output to a file
+	
+	$sed -n '2 output.txt' /etc/passwd # this will write 2 lines as output.
+	$sed -n '/root/ w output.txt' /etc/passwd  # this will write root line to to the output
+	
+	Replace text:
+	$sed 's/var/test/' /etc/passwd # it will replace var with test (make sure no space for s)
+	$sed  '/1001/s/nagios/test/' /etc/passwd # lines that contains 1001 replace nagios with test
+	$echo apple ant |sed -e 's/a/A/' /etc/passwd #  output : Apple ant (captilied the word)
+	
+    Append a line:
+	$sed '$ a test:test:test' /etc/passwd # this will add a line at the end of the document line is : test:test:test
+	$sed '2 a test:test:test' /etc/passwd # 3rd line added 
+	$sed '1 i test' /etc/passwd # this will insert line before the first line.
+	
+	insert a line:
+    $sed '/nobody/i\ test' /etc/passwd # this will add a line before that matches nobody.
+	
+	change (to delete and replace)
+	$sed '2 c /test/' /etc/passwd # this will delete record on line 2 and adds new reord test.
+	$sed '/nobody/c\ test' /etc/passwd # this will replace lines that match nobady with test.
+   
+	with regex: https://www.youtube.com/watch?v=P2tw5yJr5WQ&list=PL2qzCKTbjutJRM7K_hhNyvf8sfGCLklXw&index=36
+	special characters: \s \t . * \+ \? and \
+	\s : matches for space # this will print all the lines with consistes of space.sed '/s\/p' /etc/passwd
+	\ : escape character : the special purpose of any character will be removed. ex: the . special purpose is to look all the files but here it will removed and will look only that matches with .
+	\t : matches for tab.
+	. : matched any character (it will print the all lines ex p.t, it will print pat pbt pct line all the lines).
+	* : matches a sequence of zero of more instaces of matches( sed '/this*/p' etc/passwd here we are applying * to the s word means--> thi this thiss thisss ).
+	\? : 
+	\+ : same as * but "thi" it will not print.
+    ^ (Imp): $sed -n '/^root/p' etc/passwd # here it will print only the word root has to be first word.
+	$ :  same as end but the line matches as the end $ sed -n '/root$/p' etc/passwd.
+	[]: matches any single charachter in the list. $sed '/ro[ot]t/p' /etc/passwd # it will try to print "root,rott".
+	{}: print the number of repitions.
+	(): $sed -n '/\(asdf\)\{2\}/p' # it will print the line which matches asdf atleast two times.
+
+

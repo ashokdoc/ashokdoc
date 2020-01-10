@@ -1,0 +1,8 @@
+version conflict, xml, java.  hotfix brach ;  load balancer round robin
+nginx --->cutover; live version; temp version;   cube svc; e9 svc;
+             1. Reverse prxoy 
+			 2. Frontend and backend
+			 3. ssl
+			 4. 
+	
+	Base62 decoder, encorded.

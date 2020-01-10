@@ -1,0 +1,82 @@
+ ###https://www.terraform.io/docs/providers/aws/r/instance.html ###
+ when writing Argument that should supportd by attritubute referance. 
+ 
+ terraform:
+
+			a. Download the treeraform from the website
+			b. export the path to bashrc
+			   export PATH:$~/terraform:$PATH  or mv terraform to /usr/local/bin
+			c. .tf is the extension
+	terraform uses plugin based architecture to support its infra
+
+	initialization:
+
+	$terraform init
+	$terraform apply my-instance.tf # An execution plan has been generated and is shown below. Resource actions are indicated with the following symbols
+                     resource "aws_instance" "example" {
+						ami           = "ami-b374d5a5"
+						instance_type = "t2.micro"
+						}
+  After create the EC2 instance terraform wrote the file traaform.tfstate. this is very important it will store all configuration data of EC2
+
+     $ terraform show # to inspect the curretn state
+
+  To change infra for the same example above my-instance.tf
+
+			           resource "aws_instance" "example" {
+							ami           = "ami-b374d5a5"
+							instance_type = "t2.micro"
+							}
+	In this case terraform delete the first instance then create the 2nd one
+
+      $ terraform destroy my-instance.tf
+    It will destroy the instacne
+
+Notes:
+@ terraform plan # this will show all the exisinting configuration and checks the systax
+@ terraform apply # this will apply all the configuration
+
+
+Resources Dependencies:
+
+	  Assigning ElasticIp to the instance
+			resource "aws_eip" "ip" {
+					vpc = true
+					instance = aws_instance.example.id
+			}
+Provision:
+	
+	for example remote-exec is a provisonar if we want to run a command after the machine is create then will use this type of provisonar
+	
+Defining Variables:
+  
+create a variables.tf (file name can be any thing snce it will load all .tf files)  
+create our regions as a variable file name
+
+variable "region" {
+  default= "us-east-1"
+}
+now define the variable in file
+
+provider "aws" {
+region= var.region
+}
+	
+we can set variables directly on the command line with  -var flag 
+terraform apply \ -var 'region=us-east-2'
+create a file named terraform.tfvars  with the following content region= "us-east-2"
+Lists:
+variable "cirds" { default= [] }  # implicitly by using brackets
+variable "cirds" { type= list }  # you can specify the list in the terraform.tfvars
+                                                                    cirds= [10.0.0./16,20.30.40.2/8]
+
+variable "amis"	{
+type = "map"
+default = {
+           "us-east-1" = "ami-b374735"
+		   "us-west-1" = "ami-g5jgtg75"
+		  }
+		 }
+
+resource "aws_"
+

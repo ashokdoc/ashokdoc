@@ -1,0 +1,52 @@
+nagios installation
+yum update -y ; yum upgrade -y
+yum install -y httpd httpd-tools php gcc glibc glibc-common gd gd-devel make net-snmp wget unzip tree -y
+useradd nagios
+groupadd nagcmd
+usermod -G nagcmd nagios
+usermod -G nagcmd apache
+mkdir /root/nagios
+cd /root/nagios
+wget https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.4.5.tar.gz
+wget https://nagios-plugins.org/download/nagios-plugins-2.2.1.tar.gz
+tar -xvf nagios-4.4.5.tar.gz
+tar -xvf nagios-plugins-2.2.1.tar.gz
+cd nagios-4.4.5/
+./configure --with-command-group=nagcmd
+make all
+make install
+make install-init
+make install-commandmode
+make install-config
+make install-webconf
+htpasswd -s -c /usr/local/nagios/etc/htpasswd.users nagiosadmin
+service httpd start
+systemctl start httpd.service
+cd /root/nagios
+cd nagios-plugins-2.2.1/
+./configure --with-nagios-user=nagios --with-nagios-group=nagios
+make
+make install
+/usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg
+
+**if it is not running on the web interface then install apt-get install fcgiwrap |a2enmod cgi
+
+
+add one host to nagios
+1. go to /usr/local/nagios/etc/objects/localhost-cfg
+    define host {
+use linux-server
+host_name ip-172-31-45-124
+alias docker
+address 172.31.45.124
+}
+2. define service {
+use local-service
+host_name ip-172-31-45-124
+service_description PING
+check_command check_ping!1.0,20%!500.0,60%
+}
+3. /usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg 
+4. service nagios stop
+5. service nagios start
+

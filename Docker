@@ -1,0 +1,93 @@
+docker run -it <name of the image> -p <D host port>:<Continer Port> -v <d host dir>:<container dir> -u root --name containername
+
+
+step 1
+write a docker file
+step2 
+build the docker image
+d build <name of the image>:1.0 <fullpath of the Docker file>
+step 3 
+d tag <name of the iamge>  <repo name>
+step 4
+ 
+to change a container port number after its start
+go the the /var/lib/docker/container/hash of container/hotconfig.json
+/var/lib/docker/container/hash of container/
+     we can find the details here 1.logs
+								  2.Mounts
+								  3.hostname
+								  4. hosts (find the ip address here)
+								  5. hostconfig.json
+/var/lib/docker 
+containers  image  network  overlay2  plugins  runtimes  tmp  volumes					
+ 
+*Docker volume create --name test
+*docker run -it -v test:testdata ubuntu(can be used to copy the data from container to host)
+*docker volume inspect test
+docker run -it -v test:ctest ubuntu ls ctest(to bind another volume to the container)
+bind volume /
+
+Local repo
+*docker run -d -p 5000:5000 --restart=always --name: refistry registry:2
+*docker tag testapp localhost:5000/testapp
+*docker push localhost:5000/testapp
+*docker rm -v registry(to remove the local repo)
+
+to see the list of stored data in the private repo
+*curl -X GET http://localhost:5000/v2/test/_catalog
+*docker run -ti contaier -c 128 ubuntu /bin/baash assignin te cpu ussage
+
+*docker run -itd --network=<name of the created network>
+* docker network create --subnet 10.0.2.1/16 --gateway 10.0.2.1 --ip-range 10.0.2.0/26 <name of the network>
+* docker rename contaiername newname (to rename a container)
+
+
+Docker Commit
+-------------
+1. it will work from the docker host 
+2. run the command docker commit <container Id> <New name>
+3. tag the create image with a name Docker tag <ContinerId> <New Name>
+
+
+Docker File Command
+-------------------
+CMD 
+ENTRYPOINT
+ENV
+EXPOSE
+LABEL
+ONBUILD
+USER
+VOLUME
+WORKDIR
+
+RUN executes command(s) in a new layer and creates a new image. E.g., it is often used for installing software packages.
+CMD sets default command and/or parameters, which can be overwritten from command line when docker container runs.
+ENTRYPOINT configures a container that will run as an executable.
+
+https://github.com/rdammkoehler/DockerKata/blob/master/README.md
+
+1. d exec <elated_curran> ps
+   PID   USER     TIME  COMMAND
+    1 root      0:00 nginx: master process nginx -g daemon off;
+    6 nginx     0:00 nginx: worker process
+    7 root      0:00 ps
+ to see the what are the process running inside the contaier
+ 
+2. d exec <name of the container> apk update (This updates the images list of available packages to install)
+
+3. d exec <name of the contaier> apk add vim (to install a package on the container without entering it) 
+
+4. docker exec -it <name of the contaier> vim (directly open the vim on the container)
+
+5. docker commit --message 'some things are added' <container id>
+
+6. ** Before push the images o the docker hub we need to add the tag (d tag nginx:1.0 ashokks80/nginx:1.0)
+      then push the images this will work.
+
+7. d rm $(d ps -a -f status=exited -q) to delete the exited container
+   docker rmi --force $(docker images --all --quiet)
+8. docker stats <contaier Id>
+
+9. docker update --memory 1Gb --memory-swap 1Gb $(docker ps -aq) limit the container
+

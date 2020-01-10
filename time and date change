@@ -1,0 +1,5 @@
+Changing the Time Zone
+
+timedatectl list-timezones
+timedatectl set-timezone time_zone
+sudo timedatectl set-timezone Asia/Kolkata
