@@ -14,16 +14,13 @@ User required text print
 
  
 If we want to print the ls output through echo message then we can use $ echo “(ls)”  
-                     $ echo ‘(ls)’
-                     $ echo  $ls    ### there is variation in the outputs check the about command.
+    $ echo ‘(ls)’
+    $ echo  $ls    ### there is variation in the outputs check the about command.
 •	If we use command in the double quotes there is different if we use txt in the double quote there will be different output.
 
 
 
 Variables:   
-
-
- 
  
 By default if there is no variable values then it will show blank space. No space while defining the variable value
 If we add \n then we get output in different line
@@ -32,9 +29,9 @@ Variable shellnot start with number
 
 To print date.log with variable 
 
-$todays_date=$(date +”%Y-%m-%d”)
-$log_file_name=$todays_date
-$touch ${log_file_name}.log
+todays_date=$(date +”%Y-%m-%d”)
+log_file_name=$todays_date
+touch ${log_file_name}.log
 
 store the variable into file system,memory.
 If you define your variable in the shell script they are ony vaild with in script.
@@ -309,5 +306,4 @@ Some commands usage with awk
 	[]: matches any single charachter in the list. $sed '/ro[ot]t/p' /etc/passwd # it will try to print "root,rott".
 	{}: print the number of repitions.
 	(): $sed -n '/\(asdf\)\{2\}/p' # it will print the line which matches asdf atleast two times.
-
 

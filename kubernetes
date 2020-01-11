@@ -28,26 +28,26 @@ sudo apt-get update && sudo apt-get install -y apt-transport-https
   sudo apt-get update
   sudo apt-get install -y kubectl kubeadm kubelet
   sudo apt-mark hold kubelet kubeadm kubectl 
-5.kubeadm init --pod-network-cidr=10.240.0.0/16
-6 mkdir -p $HOME/.kube
+3.kubeadm init --pod-network-cidr=10.240.0.0/16
+4 mkdir -p $HOME/.kube
   sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
   sudo chown $(id -u):$(id -g) $HOME/.kube/config
-7. install kubeadm in both nodes (repeate the same step 2)
-9. Must install the addon CNI (kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/2140ac876ef134e0ed5af15c65e414cf26827915/Documentation/kube-flannel.yml)
+5. install kubeadm in both nodes (repeate the same step 2)
+6. Must install the addon CNI (kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/2140ac876ef134e0ed5af15c65e414cf26827915/Documentation/kube-flannel.yml)
         kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
     or chose add-on (https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/)
-8. kubeadm join 10.0.0.32:6443 --token 70incq.2zq2wjxvu0psomat \
+7. kubeadm join 10.0.0.32:6443 --token 70incq.2zq2wjxvu0psomat \
    --discovery-token-ca-cert-hash sha256:a99e2188a408e6171d81c7855a9687c0023aaa3e51027a0d3866c21bbb00015a
    always run this command as root
-9. check the nodes are correcctly installed or not 
+8. check the nodes are correcctly installed or not 
     kubectl get nodes
     kubectl get pods --all-namespaces
-10. if you last the token then run the following command to get the token [kubeadm token list ]
-11. If you lost --discovery-token-ca-cert-hash valus also you can get it by runing following commands sequentially
+9. if you last the token then run the following command to get the token [kubeadm token list ]
+10. If you lost --discovery-token-ca-cert-hash valus also you can get it by runing following commands sequentially
     openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | \
    openssl dgst -sha256 -hex | sed 's/^.* //'
 
-12. kubectl create -f podname.yml
+11. kubectl create -f podname.yml
       to deploy a pod 
 	   to know the which node the pod running is 
 	   #kubectl get pod -o wide
@@ -447,7 +447,7 @@ spec:
 	
 	 apiVersion: v1
 	   kind: Service
-	   metadata: 
+	   metadata:
 	     name: froentend svc
 		 labels:
 		   app: guestbook
@@ -472,11 +472,11 @@ apiVersion: v1
 kind: pod
 metadata: 
      name: test-ed
-spec: 
-   containers: 
+spec:
+   containers:
    - image: k8s.gcr.io/test-webserver
      name: test-container
-	 volumeMounts: 
+	 volumeMounts:
 	 - name: cache-volume
 	   mountPath: /cache
    volumes:
@@ -578,8 +578,173 @@ Config Maps:
 													2. commandline argument
 													3. Environment Variable
     
-     	
+	Syntax:
+Kubectl create configmap <map-name> <data-source>   # data source (--from-file,--from-literal)
+                                                    # data source(file,directories,literal)
 
+Mkdir –p configure-pod-container/configmap/kubectl/
+
+$kubectl create configmap game-config –from-file=configure-pod-conainer/config/kubectl/
+
+$kubectl get configmap game-config
+
+
+Files:
+
+$curl –OL https://k8s.io/examples/pods/config/redis-config 
+$kubectl create configmap redis-config –form-file=redis-config
+
+Manifest:
+
+apiVersion: v1
+kind: Pod 
+metadata: 
+     name: redis
+spec: 
+    containers:
+    - name: redis
+      Image: redis
+     volumeMounts: 
+     -mountPath: /redis-master
+      Name: config
+   Volumes:
+-	Name: config
+configmap: 
+  name: redis-config
+  items: 
+  -key: redis-config
+   Path: redis.conf
+
+$kubectl exec –it redis redis-cli
+Literals:
+
+$kubectl create configmap special-config –from-literal=special.how=very
+apiVersion: v1
+kind: pod
+metadata: 
+     name: test-pod
+spec: 
+     containers:
+     -name: test-container
+      Image: busybox
+      command: [“/bin/sh” ,“-c”, “env” ]
+      env:
+          -name: SPECIAL_LEVEL_KEY
+           valueFrom:
+                    configMapKeyRef: 
+                      name: special-config
+                      key: special.how
+    restartPolicy: Never
+
+DaemonSet:
+
+Replicaset ensure that specified no of pods running inside the cluster.
+ 
+   Ex: we have 3 nodes, pods are running on the 2 nodes only, what if we have to deploy monitoring app to the every node, in such case replicaset will nt work.
+Solution is DaemonSet.
+
+Problem with the deamonset is If we delete the deamon set it will delete the all pods in the cluster.
+
+Manifest:
+apiVersion: apps/v1
+kind: DaemonSet
+metadata: 
+    name: flurnntd-ds
+spec: 
+      template: 
+        metadata: 
+          labels: 
+            name: fluentd
+        spec: 
+            cotainers:
+            -name: fluentd
+             Imag: fluentd
+     selector: 
+      matchLabels:
+-	Name: flunted
+
+Secrets:
+
+$kubectl create secret [TYPE] [NAME] [DATA]
+
+$echo –n ‘admin’ > ./username.txt
+$echo –n ‘234567890’ > ./password.txt
+$kubectl create secret generic user-pass –from-file=./username.txt –from-file=./password.txt
+$kubectl get secrete
+
+
+Manually:
+
+$echo –n “admin” | base64
+sfrgretgegt4r
+$echo –n “1234567890” | base64
+gett34erfwfw
+
+apiVersion: v1
+kind: Secret
+metadata: 
+   name: my-secret
+   type: Opaque
+data: 
+   username: sfrgretgegt4r
+   password: gett34erfwfw
+
+$kubectl create –f my-secret.yaml
+
+Decode Secret:
+$echo –n ‘sfrgretgegt4r | base64 –decode
+
+
+apiVersion: v1
+kind: pod
+metadata:
+name: mypod
+spec: 
+   containers: 
+   -name: mypod
+    image: redis
+    volumeMount: 
+    -name: volume
+     mounthPath: /test
+     readOnly= true
+  volumes:
+  - name: volume
+  	Secret:
+	secretName: mysecret
+
+
+Jobs:
+Run to completion:
+
+There are run completion jobs and these will exit when exit code gets 0.
+Each job create one or more jobs, ensure they are successfully terminated.
+Can run a multiple pods in parallel, can scale up using kubectl scale command.
+
+
+
+Manifest file:
+
+apiVersion: batch/v1
+knd: job
+metadata: 
+ name: countdown
+spec: 
+ template:
+    metadata: 
+       name: countdown
+spec: 
+   containers:
+   -name: centos
+    Imahe: centos
+    command: 
+   -“bin/bash”
+   -“-c”
+   -“for I in 9876321; do echo $i;done”
+    restartPolicy: never
+
+
+Scheduled: 
+    CronJob:
 
 
 

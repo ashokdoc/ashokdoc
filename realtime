@@ -5,4 +5,4 @@ nginx --->cutover; live version; temp version;   cube svc; e9 svc;
 			 3. ssl
 			 4. 
 	
-	Base62 decoder, encorded.
+	Base62 decoder,encorded.
