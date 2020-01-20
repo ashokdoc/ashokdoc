@@ -19,3 +19,6 @@ grep
 ps 
 lsof
 jsonlint  ####json validator for linux#####
+
+
+While on the server, check to make sure sshd is actually running, and is listening on port 22:

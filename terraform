@@ -1,5 +1,13 @@
- ###https://www.terraform.io/docs/providers/aws/r/instance.html ###
+###https://www.terraform.io/docs/providers/aws/r/instance.html ###
  when writing Argument that should supportd by attritubute referance. 
+
+root@ashok:/home/ashok# mv terraform /usr/local/bin/
+root@ashok:/home/ashok# export AWS_ACCESS_KEY_ID="*******"
+root@ashok:/home/ashok# export AWS_SECRET_ACCESS_KEY="**********"
+root@ashok:/home/ashok# export AWS_DEFAULT_REGION="ap-south-1"
+root@ashok:/home/ashok#
+
+ 
  
  terraform:
 

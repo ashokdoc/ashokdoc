@@ -15,3 +15,17 @@ Flannel: very easy to use, No network policy support
 WeaveNet: support network policy, support encryption with IPsec for all traffic b/w nodes. easy to use, well support
 
 
+DHCP  : dynamic host configuration protocal --->>> this will assign an IP address automatically to the machine in the network.
+DNS   : domain name server: it will convert the domain name into the IP address.
+      step 1: when we enter the domain name it will look into the local cache.
+      step 2: if it not found then it will send the quary to the reslover (ISP), It also do the same thing.
+      step 3: if IP not found then it will quary send to the root server (they are total 13 root servrs in the world), the root server doesn't know the ip address but 
+              it know where to send the the reslover, it will direct reslover to the TLD (top level domain server).
+      step 4: still TLD also dont have the IP then the TLD redirect the reslover the final level Authoritative Name Server  this will hold all the name server in the world.
+      
+      Most of the cases it will stop at the first leve only
+   
+Http: Hyper trasfer text protocal -->> it will transfer the data in the form of text
+Https: Secure Http -->> in this case the txt will send the encrypted form
+ssl: Secure sockets layer -->> it is used to authenticate the identity of website with public key authentiocaion, when a computer connect the ssl website it will ask the webserver to authenticate then webserver will send a copy of public key
+TLS: transport layerd security it is a successor of ssl, it uses cryptographic protocol

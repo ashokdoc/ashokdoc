@@ -1,0 +1,35 @@
+Solution Architech Certification: 
+
+P agent -->> to forward key to the other instance, to use this in putty tick the allow agent forwarding.
+
+types of instances : (Tenancy)
+
+1. Shared : Run a shared hardware instance
+2. Dedicated : Run a dedicated instance
+3. Dedicated Host : IN this mode the underlaying hardware won't change even afte the reboot
+
+Elastic Network Interface: 
+eth0
+A network interface can include the following attributes:
+    1. A primary private IPv4 address from the IPv4 address range of your VPC
+	2. One Elastic IP address (IPv4) per private IPv4 address
+	3. One public IPv4 address
+	4. One Public IPv4 Address 
+	5. A MAC address 
+	6. one or more security groups
+	7. One instance can have multiple IP address
+	Scenarios for Network Interface 
+	1. To create low budget high avaliability solution
+	2. creating a managment network
+	    In this secnario the public ip connected to eth0 primiary and secound eth1 can be used to managment of backend process.
+		for example : the public facing allowing a security group of port 80, 443, while the secoundary group allow only port number 22
+    * with the eni we can attach a two security groups to a single instance.
+	  why we have to create two security groups : ex : we can use ne security for behind the load balancer and other for backend access , good security practise also
+
+
+Amazon EC2 pricing options: 
+
+On-Demand: Like pay how much time you use, means you have to pay running time only.
+Reserved: 2 terms avaliable 1 yr and 3 yr; 3 payment types; 
+Scheduled Reserved: Avaliable for 3 frequencies, Daily, Monthly, Weekly 
+Spot Instaces: 

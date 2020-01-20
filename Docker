@@ -1,5 +1,5 @@
 docker run -it <name of the image> -p <D host port>:<Continer Port> -v <d host dir>:<container dir> -u root --name containername
-
+default port number 2376
 
 step 1
 write a docker file
