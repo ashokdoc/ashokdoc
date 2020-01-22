@@ -185,6 +185,21 @@ print "test"
 
 $awk –f awk.script /etc/passwd
 Output:  
+ajay manager account 45000
+sunil clerk account 25000
+varun manager sales 50000
+amit manager account 47000
+tarun peon sales 15000
+deepak clerk sales 23000
+sunil peon sales 13000
+satvik director purchase 80000 
+
+
+$awk '/manager/ {print}' awkex.txt
+$awk '/manager/ {print$1}' awkex.txt
+$awk '$2==clerk' awkex
+$awk 'NR==3 { print $2 }' ------>>>>> this will print 3 line 2nd colume.
+
 
 To initialize a variable and print the variable.
 $ awk 'BEGIN { a=5 ; print a }'   # when you write a script no need to provide ; insisted of that you have to provide \n
@@ -196,10 +211,9 @@ Output : a=2 b=6    # here 2 treated as 1 and 6 treated as 2 as place values
 * Awk’s built-in variables include the field variables $1, $2, $3, and so on ($0 is the entire line)
 
 NR= prints all the lines along with line numbers
-    $awk 'NR==1{print$2}'
-
-
-
+    $awk 'NR==1{print$2}'.
+NF: To print the last line of the filed
+    
 
 
 
@@ -251,14 +265,14 @@ Some commands usage with awk
 	
     $sed p /etc/passwd # it will print the doc as it is.
 	$sed -n 'p' /etc/passwd # it will print without any duplicate value
-	$sed -n '/root/p' /etc/passwd # it will search jane in in the document 
+	$sed -n '/root/p' /etc/passwd # it will search root in in the document
 	$sed -n -e '/root/p' -e '/root/p' /etc/passwd #used to search multiple values
 	$sed -n -f commands.txt /etc/passwd # here all the commands located with in the commads.txt executed with sed
 	$sed -n ''2 p' /etc/passwd # it will print only 2nd line (Vertical)
 	$sed -n '1,4 p' /etc/passwd # it will print from 1 to 4 lines
 	$sed -n '3,$ p' /etc/passwd # it will print 3 to end of the file
-	$sed -n '1~2 p ' /etc/passwd # only odd number liines willbe printed 
-	$sed -n '/root/,4 p' /etc/passwd # prints first match of root to 4 th line 
+	$sed -n '1~2 p ' /etc/passwd # only odd number liines willbe printed
+	$sed -n '/root/,4 p' /etc/passwd # prints first match of root to 4 th line
 	
 	
 	Delete txt in the file:
@@ -288,7 +302,7 @@ Some commands usage with awk
 	
 	change (to delete and replace)
 	$sed '2 c /test/' /etc/passwd # this will delete record on line 2 and adds new reord test.
-	$sed '/nobody/c\ test' /etc/passwd # this will replace lines that match nobady with test.
+	$sed '/nobody/c\ test' /etc/passwd # this will replace lines that match nobody with test.
    
 	with regex: https://www.youtube.com/watch?v=P2tw5yJr5WQ&list=PL2qzCKTbjutJRM7K_hhNyvf8sfGCLklXw&index=36
 	special characters: \s \t . * \+ \? and \

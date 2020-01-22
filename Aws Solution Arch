@@ -32,4 +32,113 @@ Amazon EC2 pricing options:
 On-Demand: Like pay how much time you use, means you have to pay running time only.
 Reserved: 2 terms avaliable 1 yr and 3 yr; 3 payment types; 
 Scheduled Reserved: Avaliable for 3 frequencies, Daily, Monthly, Weekly 
-Spot Instaces: 
+Spot Instaces: Aws is giving unused instance to the biding, max 6 hours.
+Dedicated Instances: it will charged per hr based.
+Dedicated Host: pay fully physical host irrespective of instances.
+
+
+
+Auto Recovery-Events-Hard&soft limits:
+
+Types of status checks:
+1. system status checks
+  if anything goes wrong that should be taken care by the amazon, even stop and start solvely the issue in case ebs instance
+   a. loss of network connectivity
+   b. loss of system power
+   c. software issue on the physical host
+   d. hardware issue on the physical host that impact network reachablity
+  
+2. instance status checks
+   aws send an arp (address resolution protocol) request to the network interface. this detech the problems in the instace 
+   a. failed system status checks
+   b. incorrect networking or startup configuration 
+   c. exhaust memory
+   d. corrupted file system
+ scheduled Event:
+ we can schedule an event like cloud watch alaram when ever the system status check faild we can create auto recovery.
+Events : it will given by the aws like mainatance
+limits: it will tell out aws account limits
+
+
+
+
+VPC: virtual private cloud:
+
+Cidr : 10.0.0.0/26  : total avaliable ip address : 2^ (32-26)-->> 2^6= 64
+subnet calculation: 
+    10.0.0.0/28 -->> 11 ip address  2^(32-28)= 2^4-->16 ip
+	10.0.0.16/28 -->> 
+	10.0.0.32/28 -->>
+	10.0.0.48/28 -->> 
+
+one route table can have multiple subnetes but one subnet have one route table only.
+only one igw attached to one vpc
+NAT: private instances does not communite directly to the internet inisted they communite to the NAT and downlode the required patches
+
+NACL: network access control list 
+    when a vpc created nacl also get created one vpc has only one NACL and the lower number rule no first executed.
+
+scale-up the vpc: the vpc can be increased but the thing is that we cannot modify the exesting cidr block but can add extra cidr ipv4 block.
+
+VPC end points: in case of private instacne has to connect to a s3 bucket but s3 bucket has public in nature , in that case the private instace has no access to the s3 bucket so reslove that issue VPC end point come into picture.
+    just add the role to it for ex: s3 then we can access only s3 bucket but not internet
+	
+	
+	
+VPC peering in AWS: vpc peering does not work accross the region, where as it will across the accounts.
+important points to remember: 
+    a. create a peering connection 
+	b. make sure that add first vpc
+	c. make sure that add route table 1 vpc to 2nd vpc and 2nd to first vpc cidr block
+	
+
+
+
+
+Elastic Load balancing:
+
+a. elb can be the public ir private that depends on the subnet
+b. you can move web-server to private-subnet and keep elb in the public subnet- with in the vpc all the instance can talk together
+c. traffic gets distributed in round-robin fashion
+d. elb should be always be accessd dns only
+e. elb automatically expands
+
+Classic Load Balancer: 
+
+
+
+
+Differences b/w NAT and ELB:
+
+nat : 
+
+equivalent of forward proxy 
+should placed always in public subnet 
+traffic originated from private instance going to internet 
+
+elb: 
+
+equivalent of reverse proxy 
+canbe placed in public and private subnets
+traffic originated from internet served by public and private instance
+
+ex: if we have an instance (webserver) that is placed in the private subnet, but canbe accessed through elb what if the private instance call an api, in this case we can use nat gateway to forward the request.
+
+Auto-scalling:
+
+
+
+
+
+
+
+IAM: Identity and access managment
+
+Policy : Collection of differnet permissions 
+		 Permissions: 
+		 Arn: Amazon Resource Name
+         Create in-line policy
+Roles : it is not advisable to keep authentication details in the ec2 machine an if you want to access a particular service in such type of cases we go with the roles concept 
+Trust Relationship : which service has to belive
+
+ 
