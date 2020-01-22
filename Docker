@@ -74,9 +74,9 @@ https://github.com/rdammkoehler/DockerKata/blob/master/README.md
     7 root      0:00 ps
  to see the what are the process running inside the contaier
  
-2. d exec <name of the container> apk update (This updates the images list of available packages to install)
+2. d exec <name of the container> apt update (This updates the images list of available packages to install)
 
-3. d exec <name of the contaier> apk add vim (to install a package on the container without entering it) 
+3. d exec <name of the contaier> apt add vim (to install a package on the container without entering it) 
 
 4. docker exec -it <name of the contaier> vim (directly open the vim on the container)
 
