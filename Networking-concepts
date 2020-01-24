@@ -29,3 +29,6 @@ Http: Hyper trasfer text protocal -->> it will transfer the data in the form of 
 Https: Secure Http -->> in this case the txt will send the encrypted form
 ssl: Secure sockets layer -->> it is used to authenticate the identity of website with public key authentiocaion, when a computer connect the ssl website it will ask the webserver to authenticate then webserver will send a copy of public key
 TLS: transport layerd security it is a successor of ssl, it uses cryptographic protocol
+
+yum install net-tools             [Provides ifconfig utility]
+firewall-cmd --permanent --add-port=3221/tcp
