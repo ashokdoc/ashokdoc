@@ -78,7 +78,7 @@ vi pvd_in_cm.sh
 #read -p "enter num2 :" b
 result= expr "$a+ $b" |bc
 echo "this addition of $a and $b is: $result"
-
+ 
 when you run this script it you have to provide the values on the command only.
 
 
@@ -291,7 +291,8 @@ Some commands usage with awk
 	$sed 's/var/test/' /etc/passwd # it will replace var with test (make sure no space for s)
 	$sed  '/1001/s/nagios/test/' /etc/passwd # lines that contains 1001 replace nagios with test
 	$echo apple ant |sed -e 's/a/A/' /etc/passwd #  output : Apple ant (captilied the word)
-	
+	$sudo sed '/listen/s/ipv6=YES/ipv6=NO/' /etc/vsftpd/vsftpd.conf
+
     Append a line:
 	$sed '$ a test:test:test' /etc/passwd # this will add a line at the end of the document line is : test:test:test
 	$sed '2 a test:test:test' /etc/passwd # 3rd line added 
