@@ -1,0 +1,10 @@
+#!/bin/bash
+sudo su
+apt update -y
+apt install apache2 -y
+mkdir -p /var/www/html
+touch /var/www/html/index.html
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCmGtqmuU4xHOkV6xJ0Gz5KgI32rMELzZ9WNm/Y459QOr/Daf3tU50jQjToMo4Spg2UO71xGHvcbMBfl0mlU8pQAp61TIbg3p8QgUiI37jSsl00UuzSOUzJwyiSLp2cH72bLmg8rmQWouV8aC7VxO58FdRST7ZmCi0up0V3k+rsgUh/u1NDRb9gmDrUttcifrgjiYMi1BgpBMPF2d9DwslHniZdkso3zVTnUVQSs1ote03GkxmGBHGECXUtOCPAvWWR0hnksArKVX3kKOHpPIYu2Zu6HfryzyDS/MElqMkoK1v56T4PCnfihDJ2FY2hTnqOnIHTnC93BV9Rrdfzaz6b ashok@localhost.localdomain
+" >> /root/.ssh/authorized_keys
+sysctmctl enable apache2
+service apache2 restart
