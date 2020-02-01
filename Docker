@@ -1,6 +1,12 @@
 docker run -it <name of the image> -p <D host port>:<Continer Port> -v <d host dir>:<container dir> -u root --name containername
 default port number 2376
 
+/etc/docker/deamon.json 
+    add these lines
+	{
+	   "dns" ["10.1.2.3" "8.8.8.8"]
+	}
+
 step 1
 write a docker file
 step2 
@@ -28,9 +34,10 @@ containers  image  network  overlay2  plugins  runtimes  tmp  volumes
 * bind volume /
 
 Local repo
-* docker run -d -p 5000:5000 --restart=always --name: registry registry:2
-* docker tag testapp localhost:5000/testapp
-* docker push localhost:5000/testapp
+* docker run -d -p 5000:5000 --restart=always --name registry registry:2
+* docker pull ubuntu
+* docker tag ubuntu localhost:5000/ubuntu
+* docker push localhost:5000/ubuntu
 * docker rm -v registry (to remove the local repo)
 
 to see the list of stored data in the private repo
@@ -53,18 +60,47 @@ Docker File Command
 -------------------
 FROM
 MAINTAINER
-CMD 
+CMD it lets you define a cmd to run when your container starts
 ENTRYPOINT
 ENV
-EXPOSE
+EXPOSE 
 LABEL
 ONBUILD
 USER
+WORKDIR 
+ADD same as add but this is used in url and tar file, it will downlode the file from the url
+COPY <name of the file(in the d host)> <path of the file in the docker image>
 VOLUME
-WORKDIR
-ADD
-COPY
-VOLUME
+RUN lets you execute commands inside of your Docker image. These commands get executed once at build time and get written into your Docker image as a new layer.
+
+Four of the Dockerfile commands cannot be overridden at runtime: FROM, MAINTAINER, RUN, and ADD. 
+
+
+
+
+
+flages:
+-P: when we user without enter the port number then it will automatically map exposed port in the container to a random port.
+$ d run -P --name test tomcat
+  output: the port automatically assigned and its a ephemeral port range 0.0.0.0:34335>8080
+$ d run -p 80:8080 test tomcat
+   this command will bind the port number 80.
+$ docker run -d -p 8000-9000:5000 training/webapp python app.py
+
+This would bind port 5000 in the container to a randomly available port between 8000 and 9000 on the host.
+
+ex docker file:
+FROM ubuntu
+MAINTAINER ashokks80@gmail.com
+RUN apt update -y
+RUN apt install vim -y
+RUN apt install apache2 -y
+EXPOSE 81
+workdir /home/ubuntu
+copy index.html /home/index.html
+run mv /home/index.html /var/www/html/index.html
+cmd /bin/bash
+
 
 
 RUN executes command(s) in a new layer and creates a new image. E.g., it is often used for installing software packages.
@@ -82,7 +118,7 @@ https://github.com/rdammkoehler/DockerKata/blob/master/README.md
  
 2. d exec <name of the container> apt update (This updates the images list of available packages to install)
 
-3. d exec <name of the contaier> apt add vim (to install a package on the container without entering it) 
+3. d exec <name of the contaier> apt add vim (to install a package on the container without entering it)
 
 4. docker exec -it <name of the contaier> vim (directly open the vim on the container)
 
@@ -97,3 +133,94 @@ https://github.com/rdammkoehler/DockerKata/blob/master/README.md
 
 9. docker update --memory 1Gb --memory-swap 1Gb $(docker ps -aq) limit the container
 
+10. docker push ashokks80/contaier [make sure that images name and contaier name shoud be same, before push be image use the tag ### d tag custom ashokks80/contaier]
+
+11. docker run -it --name <test-container1 or Id> --link <test-container2 or Id> -d ubuntu
+    after the container linking if we go and see <test-container1> we can find the /etc/hosts file the new host ip<test-container2> will be added.
+
+
+Docker Networking : 
+
+  Docker’s networking subsystem is pluggable, using drivers. Several drivers exist by default, and provide core networking functionality:
+  1. Bridge 
+  2. Host
+  3. Overlay
+  4. Macvlan
+  
+  1. Bridge
+    the default network driver. A bridge can be a hardware device or a software device running within a host machine’s kernel.
+	we can create a user defined bridge, this will automatically expose all ports to each other, no ports to outside world.
+	container on the default bridge network can only access each other by IP address unless specified by --link
+Linked containers on the default bridge network share environment variables.
+	Originally, the only way to share environment variables between two containers was to link them using the --link flag. 
+	This type of variable sharing is not possible with user-defined networks. However, there are superior ways to share environment variables.
+	1. Multiple containers can mount a file or directory containing the shared information, using a Docker volume.
+	
+	$d network create --driver bridge test1
+	to connect a running container to the existitng user defined bridge then use the command 
+	$d network connect <user defined bridge> <container name>
+   to conncet a particulat container
+   $ docker network conncet --link test1 ubuntu
+   
+   
+	Personal Observations: 
+	CONTAINER ID        IMAGE               COMMAND                  CREATED              STATUS              PORTS                    NAMES
+30bf5242cba6        ubuntu              "/bin/bash"              About a minute ago   Up About a minute                            ubuntu2.1
+12bf72456809        ubuntu              "/bin/bash"              14 minutes ago       Up 14 minutes                                ubuntu2
+952ea30ca8a4        ubuntu              "/bin/bash"              34 minutes ago       Up 34 minutes                                ubuntu1
+41180eb06b22        ccc6e87d482b        "/bin/bash"              About an hour ago    Up About an hour                             ubuntu
+f57dfbb0c62d        registry:2          "/entrypoint.sh /e..."   13 hours ago         Up About an hour    0.0.0.0:5000->5000/tcp   registry
+
+	here ubuntu is the default bridge 172.17.0.4 
+		ubunntu1 is the test1 network  172.18.0.2
+	    ubuntu 2 is the test2 networl 172.19.0.1
+		ubuntu 2.1 is the test2 networ 172.19.0.2
+		
+		
+	1. when i do ping from ubuntu to ubuntu1 before $d network connect test1 ubuntu there is no ping but after the command is its getting working
+	2. in the test2 network ther are 2 continers with noting doing they both are pinging each other. test result passed. link no 140 is working.
+	3. inisted of using the --link use network conncet command because link is the legacy feature.
+	
+	
+	
+	
+  2. Overlay
+    The overlay network driver creates a distributed network among multiple Docker daemon hosts. 
+	use full for docker swarn serice.
+	Although you can connect both swarm services and standalone containers to an overlay network.
+
+	Create an overlay network
+    Prerequisites:
+		Firewall rules for Docker daemons using overlay networks
+		You need the following ports open to traffic to and from each Docker host participating on an overlay network:
+
+		TCP port 2377 for cluster management communications
+		TCP and UDP port 7946 for communication among nodes
+		UDP port 4789 for overlay network traffic
+
+	$ docker network create -d overlay test
+	
+	Do not attach Windows nodes to encrypted overlay networks.
+
+	Overlay network encryption is not supported on Windows. If a Windows node attempts to connect to an encrypted overlay network, 
+	no error is detected but the node cannot communicate
+	
+  3. Host
+    it uses host network and port publish option will be disgarded
+	
+  4. Macvlan networks
+  
+    you can use the macvlan network driver to assign a MAC address to each container’s virtual network interface, 
+	making it appear to be a physical network interface directly connected to the physical network. 
+    
+  
+	
+	
+Container Operations:
+
+docker cp <srcpath> contianer:path
+    
+docker info
+
+  
+	

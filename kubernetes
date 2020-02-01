@@ -28,14 +28,14 @@ sudo apt-get update && sudo apt-get install -y apt-transport-https
   sudo apt-get update
   sudo apt-get install -y kubectl kubeadm kubelet
   sudo apt-mark hold kubelet kubeadm kubectl 
-3.kubeadm init --pod-network-cidr=10.240.0.0/16
+3.kubeadm init ##--pod-network-cidr=10.240.0.0/16##this is optional
 4 mkdir -p $HOME/.kube
   sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
   sudo chown $(id -u):$(id -g) $HOME/.kube/config
-5. install kubeadm in both nodes (repeate the same step 2)
+5. Install kubeadm in both nodes (repeate the same step 2)
 6. Must install the addon CNI (kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/2140ac876ef134e0ed5af15c65e414cf26827915/Documentation/kube-flannel.yml)
         kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
-    or chose add-on (https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/)
+    OR chose add-on (https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/)
 7. kubeadm join 10.0.0.32:6443 --token 70incq.2zq2wjxvu0psomat \
    --discovery-token-ca-cert-hash sha256:a99e2188a408e6171d81c7855a9687c0023aaa3e51027a0d3866c21bbb00015a
    always run this command as root
@@ -57,9 +57,14 @@ sudo apt-get update && sudo apt-get install -y apt-transport-https
         ex: if you create pod via replica controller then delete throught delete rc <name>
 		    if you create pod via deployment method then delete throught delete deploy <name>
 	    b. we can expose the app with ingress also but it is not a service type.
-		c. to delete the node drine the node
+		c. to  delete the node drine the node
 		   $kubectl drain <node name> --delete-local-data --force --ignore-daemonsets
            $kubectl delete node <node name>
+		d. systex kubectl <Command> <Tyep> <Name> <Flag>
+		    command: create, delete, describe, get, apply
+			Type: Resource type <https://kubernetes.io/docs/reference/kubectl/overview/#resource-types>
+		e. Name: Name of the resource 
+		f. optional, depends on the resource
 
 
 13. Replication Controllers 
@@ -72,7 +77,7 @@ sudo apt-get update && sudo apt-get install -y apt-transport-https
 	   
 	   Replicaset         Replication controller
 	                  |   
-	          -------- ---------
+	          -------- ----------
               |                 |			  
      1.next gen of rc       
 	 2. Set based selector      2. Equality based selector
@@ -80,8 +85,8 @@ sudo apt-get update && sudo apt-get install -y apt-transport-https
     Labels & selectors	
 	labels: set of pods defined (Ex: app, tier, env)
 	selectors: Two types :Equality based,                                  set based 
-	                      =,==,!=                 				           in, notin,exists
-						  ex:
+	                    =,==,!=                 				           in, notin,exists
+					    ex:
 						 environment= production    			           environement in (production,qa) 
 						 tier       != frontend     		               tier notin (frontend,backend)
 	                    cmd: kubelet get po -l environemnt=production      cmd: kubelet get po -l environment in production
@@ -89,15 +94,15 @@ sudo apt-get update && sudo apt-get install -y apt-transport-https
 						selector:                                          selector:
 						   environemnt: production                           MatchExpersion
 						   tier: frontend                                       -{key: environmnet, oreratoe: in, values:[prod,qa]}
-                                                                                -{key:tier. operator`; notin, values:[frontend,backend]}
+                           app : test                                           -{key:tier. operator`; notin, values:[frontend,backend]}
 	We use match lables with new resources 
 	                a. Replicasets
 					b. Deploymnets
 					c. Jobs
                     D. Daemonset
 					
-      Diff b/w match lables vss match expressions
-	  match  laable used when lable key value is one 
+      Diff b/w match lables vs match expressions
+	  match  lable used when lable key value is one 
 	   ex: app: nginx-app
 	  match expression used when multiple key values exisiting
        ex: - {key: tier, operator: in, values:[frontend]}
@@ -131,23 +136,26 @@ spec:
     This will automatically create another pods because In some cases it could also be running due to a job or daemonset. 
 	Check the following and run their appropriate delete command.
      
-	 $kubectl get daemonsets.app --all-namespaces
-     $kubectl get deployments --all-namespaces
-	 $kubectl delete -n NAMESPACE deployment DEPLOYMENT
-	 * first delete the name replicaset
-	 $$ kubectl delete replicaset.apps/nginx-deployment-54
-15.  When we create deployment it will autiomatically create repilica set
+	$kubectl get daemonsets.app --all-namespaces
+    $kubectl get deployments --all-namespaces
+	$kubectl delete -n NAMESPACE deployment DEPLOYMENT
+	* first delete the name replicaset
+	$$ kubectl delete replicaset.apps/nginx-deployment-54
+15. When we create deployment it will autiomatically create repilica set
      
 16. Deploymnets
-     Upgarding the app from version 1 to 2
-	 a. upgrading with zero downtime
-	 b. upgrading sequentially, one after the other
-	 c. pause and resume upgrade process
-	 d. Rollback upgrade to previous stable release
+    Upgarding the app from version 1 to 2
+	a. upgrading with zero downtime
+	b. upgrading sequentially, one after the other
+	c. pause and resume upgrade process
+	d. Rollback upgrade to previous stable release
 	the problem can be sloved with deployments
 	
 	1.deploymentents are like any other controllers
-	but these are accountable foer updates and roll backs
+	
+	but these are accountable for updates and roll backs
+	
+	
 	2.Updates and Roll backs canbe done with changes version numbers in mainfest file
 	3.for example we have five instance running we can deploy a app into them using with replicaset but we can not update and roll back
 	4.with deployment mainfest file we can manage number of replicaset's and number of pods,(No need to wite 3 different mainfest file for 3 different types of deploymnets)
@@ -158,7 +166,8 @@ spec:
    4. Scale up and down
    5. Pause and Resume ( used to test new applications)
    
- Deploymnet types
+   Deploymnet types
+   
    1. Recreate (Stop V1 then deploy V2 so there will be a downtime)
    2. Rollaing Updates (Rolling one after the other instances Default Update strategy)
    3. Canary (its a type of rolling update but difference comes if we have 10 intances first deploy v2 then do some test if everything working fine then deploy v2 to remaing 8(usefull for testing))
@@ -169,7 +178,7 @@ spec:
    kind: deployment
    metadata: 
       name: tomcat
-	  labels:               (#label is optional but its usefull wjen managing deploymnet)
+	  labels:               (#label is optional but its usefull when managing deploymnet)
 	    app: tomcat-pod
    spec:
      repilicas: 2  #default value 1
@@ -185,7 +194,7 @@ spec:
 	   - name: tomcat-container
 	     image: tomcat
 		 port:
-		 - containerPort:80
+		 - containerPort:8080
 
       $kubectl create -f tomcat.yml
       $kubectl get deploy -l app=tomcat-pod  # when we do deploymnet it will automatically create replica set
@@ -561,8 +570,8 @@ a.  Why persistent volume?
 	        after provision of PV when a developer create a rquest for storage (PVC) the a loop on the kubernetes master check for the avaliability of PV
 	
     using: 
-          	after submitting the PVC kubernates api inspect and allocate the volume then start using it.
-	Reclaming: 
+          	after  the PVC kubernates api inspect and allocate the volume then start using it.
+	Reclaming: submitting
 			   when the user done with the volume they can delete the PVC, so the PV can be reclamied. the volume canbe reclamied, recreated, deleted, retained.
 
     
@@ -718,6 +727,7 @@ Run to completion:
 
 There are run completion jobs and these will exit when exit code gets 0.
 Each job create one or more jobs, ensure they are successfully terminated.
+Each job create one or more jobs, ensure they are successfully terminated.
 Can run a multiple pods in parallel, can scale up using kubectl scale command.
 
 
@@ -748,18 +758,12 @@ Scheduled:
 
 
 
+Pending:
 
-
-	1. Create sepetate namespaces
-	2. Rename the node
-    3. Endpoint   # Imp #
-	4. Magic Variable
-	5. 
-
-
-
-
-
+	1. Create sepetate namespaces.
+	2. Rename the node.
+    3. Endpoint   # Imp #.
+	4. Magic Variable.
 
 
 
