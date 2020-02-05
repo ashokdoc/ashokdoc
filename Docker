@@ -222,5 +222,15 @@ docker cp <srcpath> contianer:path
     
 docker info
 
+docker volume 
+
+  1. first create a volume <my_vol>
+  2. to share the volume between two containers
+  3.  $docker run -itd -P -v my_vol:/var/jenkins_home --name jenkins jenkins 
+    the data wil be copied into the my_vol 
+  4.  $docker run -tid -P- -v my_vol:/var/jenkins_home --name jenkins1 jenkins
+    here the data in the my_vol will be copied into the new container jenkins1
+  5. the difference between bind mount and volume is that we have we have to give the absoulte path in the bind mount and in case of volume n need 
+      $docker run -it -P -v /home/ashok/test:/var/jenkins_home --name jenkins3 jenkins 
   
 	

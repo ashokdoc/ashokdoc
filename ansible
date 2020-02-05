@@ -1,0 +1,38 @@
+Ansible 
+
+* it is not easy to login every instance to install ssh of the host machine rto over come this while creating the instacne just run the small script 
+  sudo su 
+  echo "ssh-key-of-the-host-machine" >> /home/ubuntu/.ssh/authorized_key
+  this  will facilate to login directly from the host machine
+  
+
+andible working directory: 
+├── ansible.cfg
+├── hosts
+└── roles
+
+Types of Facts:
+
+	1. Default Facts
+	2. Custom Facts
+
+1. Default Facts 
+2. Custom Facts
+   1. Create /etc/ansible/facts.d on managed nodes
+   2. inside of facts.d place one or more custom facts files with extension as .fact
+   3. The output of fact file should be a json.
+
+Inventories: 
+	1. static Inventories
+	2. Dynamic Inventories
+		1. Cloud is the dynamic invertory
+		2. dynamic invertorie are scripts 
+		3. Output always shouldbe json file.
+	this is the dynamic invertorie script location 
+	https://github.com/ansible/ansible/blob/devel/contrib/inventory/ec2.py
+	by running this script we can create our own invertoriy.
+	
+	to run the custom inventory need to specify the -i <path of the file>
+	
+	
+	
