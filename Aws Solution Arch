@@ -70,7 +70,7 @@ subnet calculation:
 	10.0.0.16/28 -->> 
 	10.0.0.32/28 -->>
 	10.0.0.48/28 -->> 
-
+200 subnets per vpc canbe created
 one route table can have multiple subnetes but one subnet have one route table only.
 only one igw attached to one vpc
 NAT: private instances does not communite directly to the internet inisted they communite to the NAT and downlode the required patches
