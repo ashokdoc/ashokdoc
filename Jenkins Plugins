@@ -20,3 +20,13 @@ SSH
 Multijob
 Maven
 Cloudbee Docker build and publish
+
+
+jenkins installtion on ubuntu
+
+wget -q -O - https://pkg.jenkins.io/debian/jenkins-ci.org.key | sudo apt-key add -
+sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+
+
+on RHEL
+sudo rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key
