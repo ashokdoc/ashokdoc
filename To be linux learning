@@ -22,3 +22,17 @@ jsonlint  ####json validator for linux#####
 
 
 While on the server, check to make sure sshd is actually running, and is listening on port 22:
+$ sudo netstat -anp | grep sshd
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      1538/sshd       
+tcp6       0      0 :::22                   :::*                    LISTEN      1538/sshd    
+
+ sudo iptables -L | grep ssh
+DROP       tcp  --  anywhere             anywhere            tcp dpt:ssh 
+
+$ sudo ufw verbose
+Status: active
+
+To                         Action      From
+--                         ------      ----
+22                         DENY        Anywhere
+22/tcp                     DENY        Anywhere

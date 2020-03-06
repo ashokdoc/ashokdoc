@@ -319,4 +319,3 @@ Some commands usage with awk
 	[]: matches any single charachter in the list. $sed '/ro[ot]t/p' /etc/passwd # it will try to print "root,rott".
 	{}: print the number of repitions.
 	(): $sed -n '/\(asdf\)\{2\}/p' # it will print the line which matches asdf atleast two times.
-
