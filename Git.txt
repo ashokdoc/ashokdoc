@@ -1,0 +1,3 @@
+1. to delete a remote branch 
+   to delete the remote branch # git branch -D test does not work so use below command.
+    git push origin --delete <name of the branch>
