@@ -36,3 +36,12 @@ To                         Action      From
 --                         ------      ----
 22                         DENY        Anywhere
 22/tcp                     DENY        Anywhere
+
+
+
+1. ngnix
+2. nagios
+3. python scripting
+4. kubernetes
+5. dsl ruby scripting
+6. aws services (s3, diffrent types of storage classes, cloud front)
