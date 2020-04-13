@@ -1,0 +1,26 @@
+Restful API
+   1. Restful apr are d rules.
+   2. rest api is a webapplication and it has its own url
+
+Basic concepts of rest api's
+   1. API --> Baseurl+endpoint
+              www.api.gitub.com/repo
+
+Tools:
+ curl -X GET  https://api.github.com/repo
+      if we use -i option then will get header also.
+  postman
+  swagger
+  jmeter
+  python
+  java
+  nodejs
+
+http status codes: 
+                  1xx : informational
+                  2xx : success
+                  3xx : Redirection
+                  4xx : client error
+                  5xx : server error
+                  https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+

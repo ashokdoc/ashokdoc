@@ -30,3 +30,21 @@ sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sour
 
 on RHEL
 sudo rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key
+
+
+jenkins environement variables
+
+1. $BUILD_NUMBER
+2. $BUILD_ID
+3. $BUILD_URL
+4. $NODE_NAME
+5. $JOB_NAME
+6. $BUILD_TAG
+7. $JENKINS_URL
+8. $BUILD_TAG
+9. $GIT_BRANCH
+
+to get theenvironmental variables of jenkins $JENKINS_URL/env-vars.html
+
+
+

@@ -1,0 +1,185 @@
+pipeline
+
+Declarative Pipeline is a relatively recent addition to Jenkins Pipeline [1] which presents a more simplified and opinionated syntax on top of the Pipeline sub-systems.
+
+
+
+The basic statements and expressions which are valid in Declarative Pipeline follow the same rules as Groovy’s syntax with the following exceptions:
+
+1. The top-level of the Pipeline must be a block, specifically: pipeline { }.
+
+2. No semicolons as statement separators. Each statement has to be on its own line.
+
+3. Blocks must only consist of Sections, Directives, Steps, or assignment statements.
+
+4. A property reference statement is treated as a no-argument method invocation. So, for example, input is treated as input().
+
+    Agent: 
+           agent any
+           agent none
+           agent { label 'linux'} and also canbe used agent { label 'linux && linux2' }
+           agent { node { label 'linux' } }
+           agent
+                  { docker 
+                  {
+                   image 'maven:3'
+                   label 'testingg'
+                   registryurl 'https://tsting.com'
+                   registryCredentialsId '38ru9rhf924r2h4r929'
+                    }
+                  }
+
+
+    pipeline {
+        agent none
+        stages {
+            stage ('Example Build') {
+              agent { docker 'maven:3' }  
+              steps {
+                  echo 'hello world'
+                  sh 'mvn --version'
+              }
+            }
+            stage ('Example test') {
+                agent { docker 'openjdk:8-jre'}
+                steps {
+                    echo 'Hello jdk'
+                    sh 'jave -version'
+                }
+            }
+        }
+    }
+
+
+Post action: 
+
+    always, changed, fixed, regression, aborted, failure, unstable, unsccessful, cleanup
+
+    pipeline {
+        agent any 
+        stages {
+            stage ('example') {
+                steps{
+                    echo 'hello world'
+                }
+            }
+        }
+        post {
+            always{
+                echo 'i will say hello again'
+            }
+        }
+    }
+
+
+Environment: 
+
+            pipeline {
+                agent any
+                environment {
+                    AK = 'ashok'
+                }
+                stages {
+                    stage ('example') {
+                        environment {
+                            ACCESS_KEY = credentials('some secrete text')
+                        }
+                        steps {
+                            sh 'printenv'
+                        }
+                    }
+                }
+            }
+
+
+1. An environment directive used in the top-level pipeline block will apply to all steps within the Pipeline.
+2. An environment directive defined within a stage will only apply the given environment variables to steps within the stage
+3. The environment block has a helper method credentials() defined which can be used to access pre-defined Credentials by their identifier in the Jenkins environment.
+
+
+Timeout declering: 
+            
+            pipeline {
+                agent any 
+                options {
+                    timeout(time: 1, unit: 'HOURS')
+                }
+                stages {
+                    stage ('example') {
+                        steps{
+                            echo 'hello world'
+                        }
+                    }
+                }
+            }
+
+
+Triggers:
+
+pipeline{
+    agent any 
+    triggers{ cron ('H */4 * * 1-5') }
+    stages {
+        stage('example') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+    }
+}
+
+
+Stage:
+
+pipeline {
+    agent any
+    stages {
+        stage('example'){
+            steps{
+                echo 'Hello World'
+            }
+        }
+    }
+}
+
+
+Tools:
+
+pipeline{
+    agent any 
+    tools {
+        maven 'apache-maven-3.0.1'
+    }
+    stages {
+        stage('example') {
+            steps{
+                sh 'mvn --version'
+            }
+        }
+    }
+}
+
+
+Single Condition.
+
+pipeline {
+    agent any
+    stages{
+        stage('exampple') {
+            steps {
+                echo 'hello world'
+            }
+        }
+        stage('deply'){
+            when {
+                branch 'production'
+            }
+            steps {
+                echo 'Deploying'
+            }
+        }
+    }
+}
+
+
+

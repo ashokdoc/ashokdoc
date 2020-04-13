@@ -1,0 +1,15 @@
+Problems and solutions:
+
+1. EC2 Ubuntu Instance - UNPROTECTED PRIVATE KEY FILE
+   UNPROTECTED PRIVATE KEY FILE!  
+permissions 0644 for 'xxxxx.pem' are too open.
+It is recommended that your private key files are NOT accessible by others.
+This private key will be ignored.
+bad permissions: ignore key: xxxxx.pem
+Permission denied (publickey).
+
+Solution: 
+
+Private keys must be readable only by the owner ..
+Do chmod 400 xxxxx.pem on the machine from which you're connecting
+

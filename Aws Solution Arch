@@ -71,6 +71,12 @@ subnet calculation:
 	10.0.0.32/28 -->>
 	10.0.0.48/28 -->> 
 200 subnets per vpc canbe created
+
+cidr 10.20.0.0/20
+subnet  10.20.0.0/24
+		10.20.1.0/24
+		10.20.2.0/24
+
 one route table can have multiple subnetes but one subnet have one route table only.
 only one igw attached to one vpc
 NAT: private instances does not communite directly to the internet inisted they communite to the NAT and downlode the required patches
@@ -129,9 +135,6 @@ Auto-scalling:
 
 
 
-
-
-
 IAM: Identity and access managment
 
 Policy : Collection of differnet permissions 
@@ -142,3 +145,17 @@ Roles : it is not advisable to keep authentication details in the ec2 machine an
 Trust Relationship : which service has to belive
 
  
+AWS S3: 
+ Types of storge class : 
+
+ Standard 	            Frequently accessed data
+ Intelligent-Tiering 	Long-lived data with changing or unknown access patterns
+ Standard-IA 	        Long-lived, infrequently accessed data
+ One Zone-IA 			Long-lived, infrequently accessed, non-critical data
+ Glacier 				Archive data with retrieval times ranging from minutes to hours
+ Glacier Deep Archive 	Archive data that rarely, if ever, needs to be accessed with retrieval times in hours
+ 
+
+
+
+

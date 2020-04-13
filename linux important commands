@@ -33,3 +33,17 @@ Lsblk
   After work done 
   While attaching the same volume to the other instance make sure that you have to give the name as 
   /dev/sda1 (not in case it will not attach as a root device)
+
+to adjust the firewalls we need to use this command
+
+sudo ufw app list
+
+  Nginx Full (both port 80 and 4443)
+  Nginx HTTP
+  Nginx HTTPS
+  OpenSSH
+
+sudo ufw enable 'nginx http'
+sudo ufw status 
+
+chown: to give owner ship to the user
