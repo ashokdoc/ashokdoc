@@ -1,6 +1,8 @@
 docker run -it <name of the image> -p <D host port>:<Continer Port> -v <d host dir>:<container dir> -u root --name containername
 default port number 2376
-
+Add the ec2-user to the docker group so you can execute Docker commands without using sudo.
+sudo usermod -a -G docker ec2-user
+you need to ini6 some time to add permission
 /etc/docker/deamon.json 
     add these lines
 	{
