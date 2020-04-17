@@ -68,6 +68,110 @@ Cassandra Data Model:
 		Year int,	
 		Singer text,
 		Primary key(SongId, Songname)
-	)
+	   );
+	
+	here songid is the partition key and songname is the clustering column
+	data will be clustred on the basis of songname. only one partition iwllbe created with the songId.
+		(
+        SongId int,
+        SongName text,
+        Year int,
+        Singer text,
+        Primary key((SongId, Year), SongName)
+		);
+		SongId and year are the partition key, and song name is the clustering column.
 
-			
+	Model your data in cassandra: 
+		(
+        Student rollno int primary key,
+        Student_name text,
+        Course_name text,
+		);
+	Create table student_course
+		(
+		 Student_rollno int,
+		 Student_name text,
+		 Course_name text,
+		);
+		
+	i can retrieve all the students for a particular course by following quary.
+		select * from Studnet_course where Course_name='Course_name';
+		
+	i want to search all the student students and also search all the courses that a particular student is studying.
+	
+	select * from student_course where student_rollno=rollno
+	
+How to create a keyspace: 
+	A keyspace is an object that holds the column families. Keyspace holds column families, indexes, user defined types, data center awareness, strategy used in keyspace, replication factor, etc. 
+	
+	command 'Create Keyspace' is used to create keyspace.
+	  Create keyspace KeyspaceName with replication ={'class':strategy name, 
+													   'repilication_factor': No of replication on different nodes};
+	Various components cassandra Keyspace
+	1. Simple strategy : when you have one data center
+	2. Network Topology Strategy: it is used when you have more then one data center.
+	3. Replication Factor: is the no of replicas dat placed on the different nodes.
+	
+	Example: 
+	create keyspace with replication= {'class:'simplestratery','replication_factor': 3};
+	Alter Keyspace: 
+	command: Alter Keyspace
+	
+	Alter Keyspace KeyspaceName with replication={'class':'Strategyname','replication_factor': No of replication on different ondes}
+													with DURABLE_WRITES=true/false
+	Keyspace Name: it is cannot be altred in cassandra
+	Strategy Name: Strategy name canbe altrted by spacifiting new replication factor.
+	Replication factor: Replicationfactor canbe altrted by specifying new replication factor.
+	Durable_write: by default it is true, if it is set false then there will be no commit log will be written.
+	
+	Alter Keyspace University with replication={'class': 'NetworktopologyStrategy', 'Datacenter1': 1};
+	
+	Drop/ Deelete Keyspace: 
+	Syntax: Drop keyspace KeyspaceName
+	
+	Drop keyspace University
+	there is no difference between drop keyspace and delete keyspace.
+	
+	Cassandra Table : Create, Alter, Drop & Truncate.
+	
+	Create a table: 
+					Create table KeyspaceName.TableName 
+					( 
+					ColumnName DataType,
+					ColumnName DataType,
+					Columnname DataType,
+					
+					
+					Primary key(ColumnName)
+					) with PropertyName=PropertyValue;
+					
+			Primary key: 
+						1. Single primary key  : Primary key(ColumnName)
+						2. compound primary key: primary key(ColumnName1,ColumnName2,...)
+												 Primary Key((ColumnName1,ColumnName2),ColumnName3...))
+					
+			Example of Create table: 
+						Create table University.Student
+						(
+						RollNo int,
+						Name text,
+						dept text,
+						primary Key(RollNo)
+						);
+	Alter database: 
+					Alter table KeyspaceName.TableName 
+					Alter ColumnName TYPE ColumnDatatype|
+					Add ColumnName ColumnDatatype
+					Drop ColumnName 
+					Rename ColumnName to NewColumnName 
+					With PropertyName=PropertyValue
+	Drop table: 	
+					Drop Table KeyspaceName.TableName
+					
+	Truncate Table: 
+					Truncate KeyspaceName.TableName
+					
+	Insert Data: 
+				Insert into KeyspaceName.TableName(ColumnName1, ColumnName2, ColumnName3 . . . .)
+				values (Column1Value, Column2Value, Column3Value . . . .)
+					
