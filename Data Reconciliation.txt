@@ -1,0 +1,17 @@
+Data reconciliation (DR) is defined as a process of verification of data during data migration.  
+it is common to get data corrept while migrating data due to network error or  broken transaction nf corrupt data this lead
+to error in mapping and transformtion logic.
+ it is differet kinds of 
+    Missing records
+    Missing values
+    Incorrect values
+    Duplicated records
+    Badly formatted values
+    Broken relationships across tables or systems
+
+Solution:
+
+1. master data reconciliation
+2. Transactional Data Reconciliation
+3. Accuracy of activity
+4. Automated data reconciliation

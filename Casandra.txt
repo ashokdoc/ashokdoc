@@ -1,0 +1,73 @@
+it is a disturbed database management system designed to handle a high volume of structued data servers.
+Data structures used in Cassandra are more specified than data structures used in relational databases. 
+Cassandra data structures are faster than relational database structures.
+NoSQL databases are increasingly used in Big Data and real-time web applications. 
+NoSQL databases are sometimes called Not Only SQL i.e. they may support SQL-like query language.
+
+its features: 
+1. Massively Scalable Architecture.
+2. Masterless Architecture: data canbe read on any node.
+3. Linee scale performance: as the no of nodes increase performances increases.
+4. No single point of failure: cassandra repilicates the data on different nodes that ensures no single of failure.
+5. Failed can easilybe easily recoved and removed.
+6. cassandra can compress the data upto 80% without any overhead.
+
+
+Use cases/Application: 
+
+1. Messaging.
+2. IOT.
+3. product catalogs and retail apps.
+4. Social media analytics and recommendation engine.
+
+
+Components of Cassandra:
+
+Cassendra Architecture: 
+  Cluster: Collection of many data centers.
+        Data Center:  A collection of nodes are called data centers.
+	Node: A node is the place where the data stored.
+
+  Commit log: 
+     Every operation is written to commit log. commit log used for crash recovery.
+  Mem-table: 
+     after data written in commit log, data is written mem-table this is temporary.
+  SSTable
+     when Mem-table reaches a certain threshold, data is flushed to an SSTable disk file.
+
+Data Replication: 
+   some times the link canbe down at any point of data proces, a solution is required to provide a databackup,so cassandra replicates for assuring no single point of failure.
+   for this it has two types factors included 1. where to place the replica is determined by the relica stratery 
+					      2. while the total no of nodes placed on diferent nodes is determined by the replication factor.
+						 replica factor means there is one single copy of data while 3 replica factors means 3 copiesof data on 3 different nodes.
+						for ensuring there is no single point of FAILURE the repilication FACTOR must be 3.
+
+
+Write operation: the coordinatior sends a write a request of replicas. if all the replicas are up they will recive a request regardless of their consistency level.
+                 Consistency level: how many no of nodes of respond back with success acknowledgment. the node respond back with the successful acknowledgemnt if the data is written successfully on the commit log and mem table.
+
+   the writer operation procedure: 
+		when a reques is comes it will go to commit log,commit log write log file and then that will go the mem-table, mem-table stores data temporary when it is full data will be flushed into the SS table.
+
+Read Operation: there are 3 types of read requestes that coordinator sends to replicas.
+		1. Direct request
+		2. Digest Request
+		3. Read repair request
+	
+	first the coordinator sends data to one of the replicas, then the coordinator sends the digest request to the number of replicas specified by the consistency level and checks whether the request is an updated data.
+  	then the coordinator sends the data to all replicas if any node given out of data value, a background read repair request will update data.
+
+Cassandra Data Model: 
+    In cassandra, write are not expensives. Cassandra doesnot support joins,group by OR clause aggregation.
+	Maximum the number of writes: IN cassandra writes are so very cheap, it optimized for high write performance.
+	Mazimum Data Duplication: Disl space is not more expensive then the memory and cpu. as cassandra disturbed database so data dupilication provides instant data avaliability.
+ Create a table playlist: 
+       ( 
+		SongId int,
+	 	SongName text,
+		Year int,	
+		Singer text,
+		Primary key(SongId, Songname)
+	)
+
+			
