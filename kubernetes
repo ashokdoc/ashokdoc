@@ -20,7 +20,6 @@ systemctl enable docker
 
 
 1. swapoff -a
-setenforce 0  (sed -i 's/enforcing/disabled/g' /etc/selinux/config)
 sudo apt-get update && sudo apt-get install -y apt-transport-https curl
 sudo apt-get update && sudo apt-get install -y apt-transport-https
 2.curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
