@@ -1,0 +1,115 @@
+etc/nginx/sites-enabled
+Nginx a static web server
+To reread the config user the command : nginx -r reload
+http {  ## this is the context block we can write any think here in these blocks
+     server {
+	    listen 8080;
+		root /var/www/html;
+	 }
+}
+events {} ## we an define the number of process can be used here
+###########################################
+http  {
+     server {
+	    listen 8080
+		root /var/www/html;
+		location /nginx {
+	    root /home/ashok/;           With this configuration when some  trying to him nginx folder they get 403 error  but at the same time when they try with complete path /nginx/index.html  their request will be served.
+                   }
+             }
+       }
+###########################################		
+http {
+	server {
+	 listen 8080;
+	  root /var/www/html;
+	    location /nginx  {
+		  root /home/ashok;
+		  }
+		 location ~.jpg{  ## due to this line user not able to open the .jpeg file in the location. we can write some regular experssions here.
+		    return 403
+			}
+		}				
+	}
+############################################
+ http
+   {
+    server {
+	  listen 8080;
+	   root /var/www/html;
+	    location /nginx {
+			root /home/ashok;
+			}
+		location ~.jpg$  {
+		 return 403;
+		}
+	  }
+	  server {
+	  listen 8888;
+	  location / {
+		proxy_pass http://localhost:8080/; when someone trying to hit 8888 port we are redirecting them to 8080 port
+	 }
+	  location /nginx {
+	   proxy_pass http://locakhost:8080/nginx:
+	  }
+    }
+   }
+###############################################
+Layer 7 Proxy
+https {
+	upstrem allbackend {
+		ip_hash # when ip_hash used the client request stick to one load balancer.(Sticky Sessions)
+		server 127.0.0.1:1111 fail_timeout=0;
+		server 127.0.0.1:2222;
+		server 127.0.0.1:3333;
+		server 127.0.0.1:4444;
+		}
+	upstrem app1allbackend {
+		server 127.0.0.1:2222;
+		server 127.0.0.1:1111;
+		}
+	upstrem app2allbackend {
+		server 127.0.0.1:3333;
+		server 127.0.0.1:4444;
+		}
+	server {
+		listen 80;		#When some tries to hit 80 then it will take to proxypass
+		location / {	#allbackend  when it hits backend it was specified in upstrems
+			proxy_pass http://allbackend/;     #server's
+					}
+			}
+		listen 80;
+			location /app1 {
+				proxy_pass http://allbackend/;
+				}
+		location /app2 {
+			proxy_pass http://allbackend/;
+			       }
+			   }
+events {}
+###############################################
+sudo certbot certonly --standalone  ::::: this is for lets encrypt to generate ssl for free.
+/etc/letsencrypt/live/ashoktest.ddns.net/fullchain.pem
+/etc/letsencrypt/live/ashoktest.ddns.net/privkey.pem
+Full chain.pem is the public key
+private key is the key
+###############################################
+http {
+	server {
+		listen 80;
+		listen 443 ssl http2;
+		ssl_certificate /Full path of full chian.pem;
+		ssl_certificate_key /full path of key;
+		 location / {
+			root /some path where need to be looked
+			}
+	}
+}
+#################################################
+Keep_aliave time out
+proxy_connect_timeout :: detafult 60s
+proxy_send_timeout :: default 60s
+proxy_read_timeout :: default 60s
+keep_alive :: default 60s
+proxy_next_upstream_time :: 60s
+#################################################
