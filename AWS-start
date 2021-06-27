@@ -1,0 +1,9 @@
+#!/bin/bash
+sudo su
+apt update -y
+sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+echo -e "*********\n********" | passwd ubuntu
+systemctl restart sshd
+apt install openjdk-8-jdk openjdk-8-jre -y
+echo "alias sss='systemctl status'" >> ~/.bashrc
+echo "alias sr='systemctl restart'" >> ~/.bashrc
