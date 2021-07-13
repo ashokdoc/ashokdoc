@@ -1,7 +1,6 @@
 mkdir -v /var/cache/swap
 cd /var/cache/swap
-sudo dd if=/dev/zero of=swapfile bs=4K count=3M
-sudo dd if=/dev/zero of=swapfile bs=4K count=3M
+sudo dd if=/dev/zero of=swapfile bs=2K count=1M
 sudo chmod 600 swapfile
 sudo mkswap swapfile
 sudo swapon swapfile
@@ -9,3 +8,4 @@ top -bn1 | grep -i swap
 echo "/var/cache/swap/swapfile none swap sw 0 0" | sudo tee -a /etc/fstab
 sudo swapoff swapfile
 sudo swapon -va
+
