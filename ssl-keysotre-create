@@ -1,0 +1,12 @@
+openssl req -new -newkey rsa:4096 -days 365 -x509 -subj "/CN=subject-name(as per wish)" -keyout ca-key -out ca-cert -nodes
+
+keytool -genkey -keystore <name> -validity 365 -storepass changeit -keypass changeit -dname "CN=dns of the machine" -storetype pkcs12
+
+cert-file >>> need to sign the certificate
+
+
+openssl x509 -req -CA ca-cert -cAkey -in cert-file -out cert-signed -days 365 -CAcreateserial -passin pass:changeit
+
+need to create truststore file 
+
+keytool -keystore file.truststore.jks -alias CARoot -import -file ca-cert -storepass changeit -keypass changeit 
