@@ -22,6 +22,7 @@ echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/
 sudo apt-get update
 sudo apt-get install -y kubectl kubeadm kubelet
 sudo apt-mark hold kubelet kubeadm kubectl 
+sed -i 's/systemd/cgroupfs' /var/lib/kubelet/config.yaml
 kubeadm init --pod-network-cidr=10.240.0.0/16 ##this is optional
 su ubuntu
 mkdir -p $HOME/.kube
