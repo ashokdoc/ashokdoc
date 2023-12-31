@@ -1,6 +1,6 @@
 mkdir -v /var/cache/swap
 cd /var/cache/swap
-sudo dd if=/dev/zero of=swapfile bs=2K count=1M
+sudo dd if=/dev/zero of=swapfile bs=2K count=2M
 sudo chmod 600 swapfile
 sudo mkswap swapfile
 sudo swapon swapfile
